@@ -1,22 +1,11 @@
 import {
   Avatar,
-  Button,
   ButtonBase,
-  Card,
-  Container,
   Grid,
-  Icon,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import ForecastWeather from "./ForecastWeather";
 
 export default function CurrentWeatherBar(props) {
   const currentWeatherObject = {
@@ -32,136 +21,102 @@ export default function CurrentWeatherBar(props) {
     sunset: props.currentWeather.sunset,
     icon: props.currentWeather.icon,
   };
-
-  console.log();
-
-  const forecastWeatherObject = props.forecast;
-
-  const [forecastObject, setForecastObject] = useState({
-    city: "not found",
-    country: "not found",
-    sunrise: "not found",
-    sunset: "not found",
-    forecast: [],
-  });
-  useEffect(() => {
-    setForecastObject((prevState) => ({
-      ...prevState,
-      city: forecastWeatherObject.city,
-      country: forecastWeatherObject.country,
-      sunrise: forecastWeatherObject.sunrise,
-      sunset: forecastWeatherObject.sunset,
-      forecast: forecastWeatherObject.forecats,
-    }));
-  }, []);
-
-  let arrayForecast = forecastObject.forecast;
-
   return (
     <>
       <Paper
         sx={{
-          p: 2,
-          margin: "auto",
-          maxWidth: 1000,
-          flexGrow: 1,
-          mt: 2,
-          mb: 2,
+          margin: 1,
+          maxWidth: 1920,
+          flexGrow: 0,
+          mt: 1,
+          mb: 1,
           backgroundColor: (theme) =>
             theme.palette.mode === "dark" ? "#1A2027" : "#fff",
         }}
+        container
       >
-        <Grid container spacing={2} sx={{ mt: 2 }}>
-          <Stack direction="row" sx={{ width: "100%" }}>
+        <Grid
+          item
+          xs={12}
+          sx={{ mt: 3, mb: 1, ml: 1, mr: 1 }}
+          component={Paper}
+        >
+          <Stack direction="row">
             {/* icon */}
-            <Grid item>
-              <ButtonBase sx={{ width: 256, height: 256 }} disabled={true}>
+            <Grid>
+              <ButtonBase
+                sx={{ width: 256, height: 256, mt: 9 }}
+                disabled={true}
+              >
                 <img alt="complex" src={currentWeatherObject.icon} />
               </ButtonBase>
             </Grid>
-            {/* current weather */}
-            <Grid item xs={6} component={Paper}>
-              <Grid item xs={8} container direction="column" spacing={2}>
-                <Grid item xs sx={{ textAlign: "left", mb: 4, mr: 2, mt: 2 }}>
-                  <Stack direction="column">
-                    {/* city */}
-                    <Typography
-                      gutterBottom
-                      variant="h3"
-                      component="div"
-                      sx={{ ml: 2 }}
-                    >
-                      {currentWeatherObject.city}
+            <Stack direction="column" xs={12} md={12}>
+              <Stack direction="row">
+                {/* city */}
+                <Typography
+                  gutterBottom
+                  variant="h3"
+                  textAlign="left"
+                  sx={{ ml: 2, mt: 9 }}
+                >
+                  {/* {currentWeatherObject.city} */}
+                  Puerto Montt, Chile
+                </Typography>
+              </Stack>
+              {/* description */}
+              <Typography
+                textAlign="left"
+                gutterBottom
+                variant="subtitle1"
+                sx={{ ml: 3, mb: 4 }}
+              >
+                {/* {currentWeatherObject.description} */}
+                Parcialmente nublado
+              </Typography>
+              <Stack direction="row" sx={{ mb: 2, mr: 3 }}>
+                <ButtonBase sx={{ width: 128, height: 128 }} disabled={true}>
+                  <img alt="complex" src="icons/instruments/thermometer.svg" />
+                </ButtonBase>
+                <Typography variant="h1">18</Typography>
+              </Stack>
+              <Stack direction="row" spacing={3} sx={{ mb: 2 }}>
+                <Stack direction="row" spacing={2}>
+                  <ButtonBase sx={{ width: 80, height: 80 }} disabled={true}>
+                    <img
+                      alt="complex"
+                      src="icons/instruments/thermometer-colder.svg"
+                    />
+                  </ButtonBase>
+                  <Stack direction="row">
+                    {/* temp_min */}
+                    <Typography variant="h3" sx={{ mt: 1 }}>
+                      {currentWeatherObject.temp_min}
                     </Typography>
-                    {/* description */}
-                    <Typography
-                      gutterBottom
-                      variant="subtitle1"
-                      component="div"
-                      sx={{ ml: 4, mb: 4 }}
-                    >
-                      {currentWeatherObject.description}
+                    <ButtonBase sx={{ width: 50, height: 50 }} disabled={true}>
+                      <img alt="complex" src="icons/instruments/celsius.svg" />
+                    </ButtonBase>
+                  </Stack>
+                </Stack>
+                <Stack direction="row" spacing={2}>
+                  <ButtonBase sx={{ width: 80, height: 80 }} disabled={true}>
+                    <img
+                      alt="complex"
+                      src="icons/instruments/thermometer-warmer.svg"
+                    />
+                  </ButtonBase>
+                  <Stack direction="row">
+                    {/* temp_max */}
+                    <Typography variant="h3" sx={{ mt: 1 }}>
+                      {currentWeatherObject.temp_max}
                     </Typography>
+                    <ButtonBase sx={{ width: 50, height: 50 }} disabled={true}>
+                      <img alt="complex" src="icons/instruments/celsius.svg" />
+                    </ButtonBase>
                   </Stack>
-                  <Stack direction="row" spacing={3} sx={{ mb: 2 }}>
-                    <Stack direction="row" spacing={2}>
-                      <ButtonBase
-                        sx={{ width: 80, height: 80 }}
-                        disabled={true}
-                      >
-                        <img
-                          alt="complex"
-                          src="icons/instruments/thermometer-colder.svg"
-                        />
-                      </ButtonBase>
-                      <Stack direction="row">
-                        {/* temp_min */}
-                        <Typography variant="h3" sx={{ mt: 1 }}>
-                          {currentWeatherObject.temp_min}
-                        </Typography>
-                        <ButtonBase
-                          sx={{ width: 50, height: 50 }}
-                          disabled={true}
-                        >
-                          <img
-                            alt="complex"
-                            src="icons/instruments/celsius.svg"
-                          />
-                        </ButtonBase>
-                      </Stack>
-                    </Stack>
-                    <Stack direction="row" spacing={2}>
-                      <ButtonBase
-                        sx={{ width: 80, height: 80 }}
-                        disabled={true}
-                      >
-                        <img
-                          alt="complex"
-                          src="icons/instruments/thermometer-warmer.svg"
-                        />
-                      </ButtonBase>
-                      <Stack direction="row">
-                        {/* temp_max */}
-                        <Typography variant="h3" sx={{ mt: 1 }}>
-                          {currentWeatherObject.temp_max}
-                        </Typography>
-                        <ButtonBase
-                          sx={{ width: 50, height: 50 }}
-                          disabled={true}
-                        >
-                          <img
-                            alt="complex"
-                            src="icons/instruments/celsius.svg"
-                          />
-                        </ButtonBase>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                </Grid>
-              </Grid>
-            </Grid>
-            {/* forecast */}
-            <ForecastWeather />
+                </Stack>
+              </Stack>
+            </Stack>
           </Stack>
         </Grid>
       </Paper>

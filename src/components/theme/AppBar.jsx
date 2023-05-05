@@ -101,19 +101,18 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar(props) {
-  const [search, setSearch] = useState("");
+export default function SearchAppBar({ onSearchInputChange, onEnterKeyPress }) {
+  // const [search, setSearch] = useState("");
 
+  // const handleSearch = (e) => {
+  //   setSearch(e.target.value);
+  // };
   const [checked, setChecked] = useState(true);
-  useEffect(() => {}, [search]);
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
 
   const toggleChecked = (e) => {
     setChecked(e.target.checked);
   };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -130,6 +129,7 @@ export default function SearchAppBar(props) {
           >
             WEATHER APP
           </Typography>
+          {/* search bar */}
           <Search>
             <SearchIconWrapper>
               <TravelExplore />
@@ -137,9 +137,11 @@ export default function SearchAppBar(props) {
             <StyledInputBase
               placeholder="Buscar ciudad..."
               inputProps={{ "aria-label": "search" }}
-              value={handleSearch}
+              onChange={onSearchInputChange}
+              onKeyDown={onEnterKeyPress}
             />
           </Search>
+          {/* switch theme mode */}
           <FormControlLabel
             control={
               <MaterialUISwitch

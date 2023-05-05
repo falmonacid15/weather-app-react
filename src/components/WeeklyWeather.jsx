@@ -29,12 +29,11 @@ export default function WeeklyWeather() {
             theme.palette.mode === "dark" ? "#1A2027" : "#fff",
         }}
       >
-        <Stack direction="row" spacing={2} justifyContent="flex-start">
+        <Stack direction="row" spacing={2}>
           <List
             sx={{
               bgcolor: "background.paper",
             }}
-            justifyContent="center"
           >
             <ListItem>
               <Divider orientation="vertical" flexItem />
