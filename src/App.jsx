@@ -1,28 +1,279 @@
-import { useState } from 'react';
-import './assets/css/App.css';
-import AppBar from './components/layout/SearchAppBar';
-import currentWeather from './components/currentWeather';
-import { ThemeProvider } from '@emotion/react';
-import { createTheme } from '@mui/material';
-import MiniDrawer from './components/layout/MiniDrawer';
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+import "./assets/css/App.css";
+import { ThemeProvider } from "@emotion/react";
+import {
+  Alert,
+  Backdrop,
+  Box,
+  Card,
+  CircularProgress,
+  Grid,
+  LinearProgress,
+  Snackbar,
+  Stack,
+  createTheme,
+} from "@mui/material";
+import SearchAppBar from "./components/layout/SearchAppBar";
+import CurrentWeatherPaper from "./components/data-display/currentWeather";
+import HourlyWeatherPaper from "./components/data-display/hourlyWeather";
+import SunsetAndSunrisePaper from "./components/data-display/sunsetAndSunrise";
+import WeaklyWeatherPaper from "./components/data-display/weaklyWeather";
+import { useEffect, useState } from "react";
+import GetCurrentWeather from "./components/services/getCurrentWeather";
+import GetHourlyWeather from "./components/services/getHourlyWeather";
 
 function App() {
-  return (
-    <ThemeProvider theme={darkTheme}>
-      <div className="App w-full">
-        <MiniDrawer />
-        {/* <AppBar /> */}
+  const [mode, setMode] = useState("dark");
 
-        <cardImg />
-      </div>
-      <div className="container"></div>
-    </ThemeProvider>
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode === "dark" ? "dark" : "light",
+    },
+  });
+
+  const [search, setSearch] = useState("");
+
+  const [open, setOpen] = useState(false);
+
+  const [currentWeather, setCurrentWeather] = useState({
+    coord: {
+      lon: "n/a",
+      lat: "n/a",
+    },
+    weather: [
+      {
+        id: "n/a",
+        main: "n/a",
+        description: "n/a",
+        icon: "icons/instruments/not-available.svg",
+      },
+    ],
+    base: "stations",
+    main: {
+      temp: "n/a",
+      feels_like: "n/a",
+      temp_min: "n/a",
+      temp_max: "n/a",
+      pressure: "n/a",
+      humidity: "n/a",
+      sea_level: "n/a",
+      grnd_level: "n/a",
+    },
+    visibility: "n/a",
+    wind: {
+      speed: "n/a",
+      deg: "n/a",
+      gust: "n/a",
+    },
+    rain: {
+      "1h": "n/a",
+    },
+    clouds: {
+      all: "n/a",
+    },
+    dt: "n/a",
+    sys: {
+      type: "n/a",
+      id: "n/a",
+      country: "n/a",
+      sunrise: "n/a",
+      sunset: "n/a",
+    },
+    timezone: 7200,
+    id: 3163858,
+    name: "n/a",
+    cod: 404,
+  });
+
+  const [hourlyWeather, setHourlyWeather] = useState({
+    cod: "404",
+    message: 0,
+    cnt: 5,
+    list: [],
+    city: {
+      id: 0,
+      name: "not found",
+      coord: { lat: 48.8534, lon: 2.3488 },
+      country: "nf",
+      population: 1000000,
+      timezone: 7200,
+      sunrise: 1634129316,
+      sunset: 1634170009,
+    },
+  });
+
+  const [data, setData] = useState({});
+
+  function handleSearch(city) {
+    setSearch(city);
+  }
+
+  function handleMode(e) {
+    setMode(e);
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (search !== "") {
+      GetCurrentWeather(search).then((data) => {
+        if (data.cod !== "404") {
+          setCurrentWeather((prevState) => ({
+            ...prevState,
+            coord: {
+              lon: data.coord.lon,
+              lat: data.coord.lat,
+            },
+            weather: [
+              {
+                id: data.weather[0].id,
+                main: data.weather[0].main,
+                description: data.weather[0].description,
+                icon: `icons/openweathermap/${data.weather[0].icon}.svg`,
+              },
+            ],
+            base: data.base,
+            main: {
+              temp: data.main.temp,
+              feels_like: data.main.feels_like,
+              temp_min: data.main.temp_min,
+              temp_max: data.main.temp_max,
+              pressure: data.main.pressure,
+              humidity: data.main.humidity,
+              sea_level: data.main.sea_level,
+              grnd_level: data.main.grnd_level,
+            },
+            visibility: data.visibility,
+            wind: {
+              speed: data.wind.speed,
+              deg: data.wind.deg,
+              gust: data.wind.gust,
+            },
+
+            clouds: {
+              all: data.clouds.all,
+            },
+            dt: data.dt,
+            sys: {
+              type: data.sys.type,
+              id: data.sys.id,
+              country: data.sys.country,
+              sunrise: data.sys.sunrise,
+              sunset: data.sys.sunset,
+            },
+            timezone: data.timezone,
+            id: data.id,
+            name: data.name,
+            cod: data.cod,
+          }));
+        } else {
+          setOpen(true);
+        }
+      });
+      GetHourlyWeather(search).then((data) => {
+        if (data.cod !== "404") {
+          setHourlyWeather((prevState) => ({
+            ...prevState,
+            cod: data.cod,
+            message: data.message,
+            cnt: data.cnt,
+            list: data.list.map((row) => ({
+              dt: row.dt,
+              main: {
+                temp: row.main.temp,
+                feels_like: row.main.feels_like,
+                temp_min: row.main.temp_min,
+                temp_max: row.main.temp_max,
+                pressure: row.main.pressure,
+                sea_level: row.main.sea_level,
+                grnd_level: row.main.grnd_level,
+                humidity: row.main.humidity,
+                temp_kf: row.main.temp_kf,
+              },
+              weather: [
+                {
+                  id: row.weather[0].id,
+                  main: row.weather[0].main,
+                  description: row.weather[0].description,
+                  icon: `icons/openweathermap/${row.weather[0].icon}.svg`,
+                },
+              ],
+              clouds: {
+                all: row.clouds.all,
+              },
+              wind: {
+                speed: row.wind.speed,
+                deg: row.wind.deg,
+                gust: row.wind.gust,
+              },
+              visibility: row.visibility,
+              pop: row.pop,
+              sys: {
+                pod: row.sys.pod,
+              },
+              dt_txt: row.dt_txt,
+            })),
+            city: {
+              id: data.city.id,
+              name: data.city.name,
+              coord: {
+                lat: data.city.coord.lat,
+                lon: data.city.coord.lon,
+              },
+              country: data.city.country,
+              population: data.city.population,
+              timezone: data.city.timezone,
+              sunrise: data.city.sunrise,
+              sunset: data.city.sunset,
+            },
+          }));
+        } else {
+          console.log("response HOURLY NOT FOUND 404");
+        }
+      });
+
+      setOpen(true);
+    }
+  }, [search, mode]);
+
+  return (
+    <>
+      <ThemeProvider theme={darkTheme}>
+        <SearchAppBar search={handleSearch} mode={handleMode} />
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            {...(data.cod !== "404"
+              ? { severity: "success" }
+              : { severity: "error" })}
+            sx={{ width: "100%" }}
+          >
+            {data.cod !== "404"
+              ? "Ciudad encontrada 😀"
+              : "Ciudad no encontrada 😔"}
+          </Alert>
+        </Snackbar>
+        <Box container component={Card} className="w-full p-2">
+          <Grid item>
+            <Stack direction="row" spacing={4}>
+              <CurrentWeatherPaper data={currentWeather} />
+              <Stack direction="column" spacing={2}>
+                <HourlyWeatherPaper data={hourlyWeather} />
+                <SunsetAndSunrisePaper data={currentWeather} />
+              </Stack>
+            </Stack>
+          </Grid>
+          {/* <Grid item>
+          <WeaklyWeatherPaper />
+        </Grid> */}
+        </Box>
+      </ThemeProvider>
+    </>
   );
 }
 
