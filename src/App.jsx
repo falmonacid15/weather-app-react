@@ -22,18 +22,22 @@ import GetCurrentWeather from "./components/services/getCurrentWeather";
 import GetHourlyWeather from "./components/services/getHourlyWeather";
 
 function App() {
+  // theme
   const [mode, setMode] = useState("dark");
-
   const darkTheme = createTheme({
     palette: {
       mode: mode === "dark" ? "dark" : "light",
     },
   });
 
+  // globals
   const [search, setSearch] = useState("");
-
   const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState({
+    cod: 404,
+  });
 
+  // apiData
   const [currentWeather, setCurrentWeather] = useState({
     coord: {
       lon: "n/a",
@@ -83,7 +87,6 @@ function App() {
     name: "n/a",
     cod: 404,
   });
-
   const [hourlyWeather, setHourlyWeather] = useState({
     cod: "404",
     message: 0,
@@ -100,7 +103,6 @@ function App() {
       sunset: 1634170009,
     },
   });
-
   const [data, setData] = useState({});
 
   function handleSearch(city) {
@@ -171,8 +173,12 @@ function App() {
             name: data.name,
             cod: data.cod,
           }));
-        } else {
+          setStatus((prevState) => ({
+            ...prevState,
+            cod: data.cod,
+          }));
           setOpen(true);
+        } else {
         }
       });
       GetHourlyWeather(search).then((data) => {
@@ -232,15 +238,20 @@ function App() {
               sunset: data.city.sunset,
             },
           }));
+          setData(data);
         } else {
           console.log("response HOURLY NOT FOUND 404");
         }
       });
-
+      setStatus((prevState) => ({
+        ...prevState,
+        cod: data.cod,
+      }));
       setOpen(true);
     }
   }, [search, mode]);
 
+  console.log("status", status);
   return (
     <>
       <ThemeProvider theme={darkTheme}>
@@ -248,14 +259,14 @@ function App() {
         <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
           <Alert
             onClose={handleClose}
-            {...(data.cod !== "404"
-              ? { severity: "success" }
-              : { severity: "error" })}
+            {...(status.cod !== 200
+              ? { severity: "error" }
+              : { severity: "success" })}
             sx={{ width: "100%" }}
           >
-            {data.cod !== "404"
-              ? "Ciudad encontrada 😀"
-              : "Ciudad no encontrada 😔"}
+            {status.cod !== 200
+              ? "Ciudad no encontrada 😔"
+              : "Ciudad encontrada 😀"}
           </Alert>
         </Snackbar>
         <Box container component={Card} className="w-full p-2">

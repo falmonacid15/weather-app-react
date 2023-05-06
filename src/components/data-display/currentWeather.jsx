@@ -11,9 +11,6 @@ import React from "react";
 
 const CurrentWeatherPaper = (props) => {
   const { data } = props;
-
-  console.log("current weather", data);
-
   return (
     <Box component={Paper} container className="p-4 shadow-xl">
       <Grid item className="cityName">

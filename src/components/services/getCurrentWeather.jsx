@@ -6,7 +6,6 @@ const api = {
 };
 
 const GetCurrentWeather = (props) => {
-  console.log("get", props);
   const data = fetch(
     `${api.base}weather?q=${props}&units=metric&lang=es&APPID=${api.key}`
   ).then((res) => res.json());
