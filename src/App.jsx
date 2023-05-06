@@ -20,6 +20,7 @@ import WeaklyWeatherPaper from "./components/data-display/weaklyWeather";
 import { useEffect, useState } from "react";
 import GetCurrentWeather from "./components/services/getCurrentWeather";
 import GetHourlyWeather from "./components/services/getHourlyWeather";
+import GetForecastWeather from "./components/services/getForecastWeather";
 
 function App() {
   // theme
@@ -34,7 +35,7 @@ function App() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState({
-    cod: 404,
+    cod: 200,
   });
 
   // apiData
@@ -85,10 +86,10 @@ function App() {
     timezone: 7200,
     id: 3163858,
     name: "n/a",
-    cod: 404,
+    cod: "",
   });
   const [hourlyWeather, setHourlyWeather] = useState({
-    cod: "404",
+    cod: "",
     message: 0,
     cnt: 5,
     list: [],
@@ -103,7 +104,14 @@ function App() {
       sunset: 1634170009,
     },
   });
-  const [data, setData] = useState({});
+  const [forecastWeather, setForecastWeather] = useState({
+    cod: "",
+    message: 0,
+    cnt: 5,
+    list: [],
+    city: {},
+  });
+  // const [data, setData] = useState();
 
   function handleSearch(city) {
     setSearch(city);
@@ -123,135 +131,189 @@ function App() {
 
   useEffect(() => {
     if (search !== "") {
+      // currentWeather
       GetCurrentWeather(search).then((data) => {
-        if (data.cod !== "404") {
-          setCurrentWeather((prevState) => ({
+        setCurrentWeather((prevState) => ({
+          ...prevState,
+          coord: {
+            lon: data.coord.lon,
+            lat: data.coord.lat,
+          },
+          weather: [
+            {
+              id: data.weather[0].id,
+              main: data.weather[0].main,
+              description: data.weather[0].description,
+              icon: `icons/openweathermap/${data.weather[0].icon}.svg`,
+            },
+          ],
+          base: data.base,
+          main: {
+            temp: data.main.temp,
+            feels_like: data.main.feels_like,
+            temp_min: data.main.temp_min,
+            temp_max: data.main.temp_max,
+            pressure: data.main.pressure,
+            humidity: data.main.humidity,
+            sea_level: data.main.sea_level,
+            grnd_level: data.main.grnd_level,
+          },
+          visibility: data.visibility,
+          wind: {
+            speed: data.wind.speed,
+            deg: data.wind.deg,
+            gust: data.wind.gust,
+          },
+
+          clouds: {
+            all: data.clouds.all,
+          },
+          dt: data.dt,
+          sys: {
+            type: data.sys.type,
+            id: data.sys.id,
+            country: data.sys.country,
+            sunrise: data.sys.sunrise,
+            sunset: data.sys.sunset,
+          },
+          timezone: data.timezone,
+          id: data.id,
+          name: data.name,
+          cod: data.cod,
+        }));
+        if (data.cod === 200) {
+          setStatus((prevState) => ({
             ...prevState,
-            coord: {
-              lon: data.coord.lon,
-              lat: data.coord.lat,
+            cod: currentWeather.cod,
+          }));
+        } else {
+          // setData((currentWeather.cod = 404));
+        }
+      });
+      // hourlyWeather
+      GetHourlyWeather(search).then((data) => {
+        setHourlyWeather((prevState) => ({
+          ...prevState,
+          cod: data.cod,
+          message: data.message,
+          cnt: data.cnt,
+          list: data.list.map((row) => ({
+            dt: row.dt,
+            main: {
+              temp: row.main.temp,
+              feels_like: row.main.feels_like,
+              temp_min: row.main.temp_min,
+              temp_max: row.main.temp_max,
+              pressure: row.main.pressure,
+              sea_level: row.main.sea_level,
+              grnd_level: row.main.grnd_level,
+              humidity: row.main.humidity,
+              temp_kf: row.main.temp_kf,
             },
             weather: [
               {
-                id: data.weather[0].id,
-                main: data.weather[0].main,
-                description: data.weather[0].description,
-                icon: `icons/openweathermap/${data.weather[0].icon}.svg`,
+                id: row.weather[0].id,
+                main: row.weather[0].main,
+                description: row.weather[0].description,
+                icon: `icons/openweathermap/${row.weather[0].icon}.svg`,
               },
             ],
-            base: data.base,
-            main: {
-              temp: data.main.temp,
-              feels_like: data.main.feels_like,
-              temp_min: data.main.temp_min,
-              temp_max: data.main.temp_max,
-              pressure: data.main.pressure,
-              humidity: data.main.humidity,
-              sea_level: data.main.sea_level,
-              grnd_level: data.main.grnd_level,
-            },
-            visibility: data.visibility,
-            wind: {
-              speed: data.wind.speed,
-              deg: data.wind.deg,
-              gust: data.wind.gust,
-            },
-
             clouds: {
-              all: data.clouds.all,
+              all: row.clouds.all,
             },
-            dt: data.dt,
+            wind: {
+              speed: row.wind.speed,
+              deg: row.wind.deg,
+              gust: row.wind.gust,
+            },
+            visibility: row.visibility,
+            pop: row.pop,
             sys: {
-              type: data.sys.type,
-              id: data.sys.id,
-              country: data.sys.country,
-              sunrise: data.sys.sunrise,
-              sunset: data.sys.sunset,
+              pod: row.sys.pod,
             },
-            timezone: data.timezone,
-            id: data.id,
-            name: data.name,
-            cod: data.cod,
-          }));
+            dt_txt: row.dt_txt,
+          })),
+          city: {
+            id: data.city.id,
+            name: data.city.name,
+            coord: {
+              lat: data.city.coord.lat,
+              lon: data.city.coord.lon,
+            },
+            country: data.city.country,
+            population: data.city.population,
+            timezone: data.city.timezone,
+            sunrise: data.city.sunrise,
+            sunset: data.city.sunset,
+          },
+        }));
+        if (data.cod === 200) {
           setStatus((prevState) => ({
             ...prevState,
             cod: data.cod,
           }));
-          setOpen(true);
         } else {
+          // setData((status.cod = 404));
         }
       });
-      GetHourlyWeather(search).then((data) => {
-        if (data.cod !== "404") {
-          setHourlyWeather((prevState) => ({
-            ...prevState,
-            cod: data.cod,
-            message: data.message,
-            cnt: data.cnt,
-            list: data.list.map((row) => ({
-              dt: row.dt,
-              main: {
-                temp: row.main.temp,
-                feels_like: row.main.feels_like,
-                temp_min: row.main.temp_min,
-                temp_max: row.main.temp_max,
-                pressure: row.main.pressure,
-                sea_level: row.main.sea_level,
-                grnd_level: row.main.grnd_level,
-                humidity: row.main.humidity,
-                temp_kf: row.main.temp_kf,
-              },
-              weather: [
-                {
-                  id: row.weather[0].id,
-                  main: row.weather[0].main,
-                  description: row.weather[0].description,
-                  icon: `icons/openweathermap/${row.weather[0].icon}.svg`,
-                },
-              ],
-              clouds: {
-                all: row.clouds.all,
-              },
-              wind: {
-                speed: row.wind.speed,
-                deg: row.wind.deg,
-                gust: row.wind.gust,
-              },
-              visibility: row.visibility,
-              pop: row.pop,
-              sys: {
-                pod: row.sys.pod,
-              },
-              dt_txt: row.dt_txt,
-            })),
-            city: {
-              id: data.city.id,
-              name: data.city.name,
-              coord: {
-                lat: data.city.coord.lat,
-                lon: data.city.coord.lon,
-              },
-              country: data.city.country,
-              population: data.city.population,
-              timezone: data.city.timezone,
-              sunrise: data.city.sunrise,
-              sunset: data.city.sunset,
+      // ForecastWeather
+      GetForecastWeather(search).then((data) => {
+        setForecastWeather((prevState) => ({
+          ...prevState,
+          cod: data.cod,
+          message: data.message,
+          cnt: data.cnt,
+          list: data.list.map((row) => ({
+            dt: row.dt,
+            dt_txt: row.dt_txt,
+            main: {
+              temp: row.main.temp,
+              feels_like: row.main.feels_like,
+              temp_min: row.main.temp_min,
+              temp_max: row.main.temp_max,
+              pressure: row.main.pressure,
+              sea_level: row.main.sea_level,
+              grnd_level: row.main.grnd_level,
+              humidity: row.main.humidity,
+              temp_kf: row.main.temp_kf,
             },
-          }));
-          setData(data);
-        } else {
-          console.log("response HOURLY NOT FOUND 404");
-        }
+            pop: row.pop,
+            visibility: row.visibility,
+            wind: {
+              speed: row.wind.speed,
+              deg: row.wind.deg,
+              gust: row.wind.gust,
+            },
+            clouds: {
+              all: row.clouds.all,
+            },
+
+            sys: {
+              pod: row.sys.pod,
+            },
+            weather: [
+              {
+                id: row.weather[0].id,
+                main: row.weather[0].main,
+                description: row.weather[0].description,
+                icon: `icons/openweathermap/${row.weather[0].icon}.svg`,
+              },
+            ],
+          })),
+          city: {
+            id: data.city.id,
+            name: data.city.name,
+            coord: {
+              lat: data.city.coord.lat,
+              lon: data.city.coord.lon,
+            },
+          },
+        }));
       });
-      setStatus((prevState) => ({
-        ...prevState,
-        cod: data.cod,
-      }));
-      setOpen(true);
     }
+    setOpen(true);
   }, [search, mode]);
 
-  console.log("status", status);
   return (
     <>
       <ThemeProvider theme={darkTheme}>
@@ -259,12 +321,12 @@ function App() {
         <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
           <Alert
             onClose={handleClose}
-            {...(status.cod !== 200
+            {...(currentWeather.cod !== 200
               ? { severity: "error" }
               : { severity: "success" })}
             sx={{ width: "100%" }}
           >
-            {status.cod !== 200
+            {...currentWeather.cod !== 200
               ? "Ciudad no encontrada 😔"
               : "Ciudad encontrada 😀"}
           </Alert>
@@ -279,9 +341,9 @@ function App() {
               </Stack>
             </Stack>
           </Grid>
-          {/* <Grid item>
-          <WeaklyWeatherPaper />
-        </Grid> */}
+          <Grid item>
+            <WeaklyWeatherPaper data={forecastWeather} />
+          </Grid>
         </Box>
       </ThemeProvider>
     </>
