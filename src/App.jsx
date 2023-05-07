@@ -331,18 +331,13 @@ function App() {
               : "Ciudad encontrada 😀"}
           </Alert>
         </Snackbar>
-        <Box container component={Card} className="w-full p-2">
+        <Box container component={Card} className="w-full p-10">
           <Grid item>
-            <Stack direction="row" spacing={4}>
+            <Stack direction="row" spacing={3}>
+              <WeaklyWeatherPaper data={forecastWeather} />
               <CurrentWeatherPaper data={currentWeather} />
-              <Stack direction="column" spacing={2}>
-                <HourlyWeatherPaper data={hourlyWeather} />
-                <SunsetAndSunrisePaper data={currentWeather} />
-              </Stack>
+              <HourlyWeatherPaper data={hourlyWeather} />
             </Stack>
-          </Grid>
-          <Grid item>
-            <WeaklyWeatherPaper data={forecastWeather} />
           </Grid>
         </Box>
       </ThemeProvider>

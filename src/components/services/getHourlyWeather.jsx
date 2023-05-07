@@ -5,7 +5,7 @@ const api = {
 
 const GetHourlyWeather = (props) => {
   const data = fetch(
-    `${api.base}forecast?q=${props}&units=metric&lang=es&APPID=${api.key}&cnt=5`
+    `${api.base}forecast?q=${props}&units=metric&lang=es&APPID=${api.key}&cnt=8`
   ).then((res) => res.json());
 
   return data;

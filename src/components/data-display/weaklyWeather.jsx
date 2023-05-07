@@ -24,15 +24,12 @@ const WeaklyWeatherPaper = (props) => {
     }
     forecastsByDay[date].push(forecast);
   });
-
-  console.log("forecastsByDay", forecastsByDay);
-
   return (
     <Box container component={Paper} className="p-4 shadow-xl">
       <Typography className="uppercase font-semibold text-lg antialiased">
         semanal
       </Typography>
-      <TableContainer>
+      {/* <TableContainer>
         <Table aria-label="simple table">
           <TableBody>
             {Object.keys(forecastsByDay).map((date) => () => {
@@ -42,7 +39,7 @@ const WeaklyWeatherPaper = (props) => {
             })}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
     </Box>
   );
 };

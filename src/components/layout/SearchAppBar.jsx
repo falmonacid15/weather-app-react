@@ -128,7 +128,7 @@ export default function SearchAppBar(props) {
           <Avatar
             alt="IconBar"
             src="icons/openweathermap/02d.svg"
-            sx={{ width: 90, height: 90 }}
+            sx={{ width: 90, height: 65 }}
           />
         </IconButton>
         <Typography
