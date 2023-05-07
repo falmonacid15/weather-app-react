@@ -22,10 +22,10 @@ const CurrentWeatherPaper = (props) => {
   return (
     <Box component={Paper} container className="p-2 shadow-xl">
       <Grid item className="cityName">
-        <Typography className="font-light text-left tracking-wide text-6xl uppercase antialiased">
+        <Typography className="font-light text-left tracking-wide text-7xl mb-4 uppercase antialiased">
           {data.name}, {data.sys.country}
         </Typography>
-        <Typography className="font-light text-left uppercase antialiased">
+        <Typography className="font-light text-left  uppercase antialiased">
           {moment()
             .utcOffset(timezone / 60)
             .format("ddd, DD MMMM")}
@@ -38,7 +38,7 @@ const CurrentWeatherPaper = (props) => {
       </Grid>
       <Divider className="mt-4" />
       <Grid item className="description">
-        <Typography className="font-extralight text-left text-4xl ml-4 mt-2 capitalize antialiased">
+        <Typography className="font-extralight text-left text-5xl ml-4 mt-4 capitalize antialiased">
           {data.weather[0].description}
         </Typography>
       </Grid>
@@ -49,7 +49,7 @@ const CurrentWeatherPaper = (props) => {
             <Avatar
               alt="Remy Sharp"
               src={`${data.weather[0].icon}`}
-              sx={{ width: 165, height: 165 }}
+              sx={{ width: 165, height: 200 }}
             />
           </Grid>
           <Typography className="font-black text-left text-9xl ml-4 mt-4 mr-6 antialiased">
@@ -119,7 +119,7 @@ const CurrentWeatherPaper = (props) => {
                   <Typography className="capitalize font-thin text-lg">
                     Amanecer
                   </Typography>
-                  <Typography className="uppercase font-normal text-lg mr-2 mt-2">
+                  <Typography className="uppercase font-normal text-lg text-center mt-2">
                     {moment.unix(data.sys.sunrise).format("HH:mm")}
                   </Typography>
                 </Stack>
@@ -137,7 +137,7 @@ const CurrentWeatherPaper = (props) => {
                   <Typography className="capitalize font-thin text-lg">
                     atardecer
                   </Typography>
-                  <Typography className="uppercase font-normal text-lg mr-2 mt-2">
+                  <Typography className="uppercase font-normal text-lg text-center mt-2">
                     {moment.unix(data.sys.sunset).format("HH:mm")}
                   </Typography>
                 </Stack>

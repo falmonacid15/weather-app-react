@@ -5,9 +5,7 @@
 body {
   margin: 0;
   display: grid;
-  place-items: center;
-  min-width: "100%";
-  min-height: "100%";
+  align-content: flex-start;
   margin-top: 85px;
   background-color: #000000;
 }

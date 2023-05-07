@@ -4,6 +4,7 @@ import {
   Box,
   Divider,
   Grid,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -16,6 +17,8 @@ import {
 } from "@mui/material";
 import moment from "moment/moment";
 import React from "react";
+import HourlySkeleton from "../layout/skeletons/hourlySkeleton";
+import { useState } from "react";
 
 const HourlyWeatherPaper = (props) => {
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -36,14 +39,19 @@ const HourlyWeatherPaper = (props) => {
   }));
 
   const { data } = props;
+
+  const [selectedHour, setSelectedHour] = useState({});
+
+  console.log("selectedhour", selectedHour);
+
   return (
     <Box component={Paper} container className="shadow-xl">
       <Grid item>
-        <Typography className="mb-4 mt-6 text-3xl font-light">
+        <Typography className="mb-4 text-3xl font-light text-center">
           PRONOSTICO POR HORA
         </Typography>
       </Grid>
-      <Grid item className="m-2">
+      <Grid item className="p-2">
         <TableContainer>
           <Table aria-label="simple table">
             <TableHead>
@@ -96,11 +104,17 @@ const HourlyWeatherPaper = (props) => {
                     className="font-light"
                     width="2%"
                   >
-                    <Avatar
-                      alt=""
-                      src={row.weather[0].icon}
-                      sx={{ width: 50, height: 35 }}
-                    />
+                    <IconButton
+                      onClick={() => {
+                        setSelectedHour(row);
+                      }}
+                    >
+                      <Avatar
+                        alt=""
+                        src={row.weather[0].icon}
+                        sx={{ width: 50, height: 35 }}
+                      />
+                    </IconButton>
                   </StyledTableCell>
                   <StyledTableCell
                     align="center"
@@ -133,6 +147,7 @@ const HourlyWeatherPaper = (props) => {
                 </StyledTableRow>
               ))}
             </TableBody>
+            {/* <HourlySkeleton /> */}
           </Table>
         </TableContainer>
       </Grid>
