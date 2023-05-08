@@ -1,21 +1,17 @@
-
 # Weather App React
 
-
 Simple web application to check weather conditions for any city in the world using react.
-
 
 ## Authors
 
 - [@falmonacid15](https://github.com/falmonacid15)
 
-
 ## Installation
 
-
 clone repository
+
 ```bash
- git clone 
+ git clone https://github.com/falmonacid15/weather-app-react.git
 ```
 
 ## Environment Variables
@@ -27,41 +23,39 @@ To create enviroment use `cp .env.example .env`
 I use
 [Open weather map](https://openweathermap.org/price)
 
-
-
 ## Deployment
 
 To deploy this project run
 
 #
+
 Downloads a package and it's dependencies
 
 ```bash
   npm install
 ```
+
 #
+
 Run App
+
 ```bash
   npm run dev
 ```
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+Search by city
+
+![App Screenshot](https://raw.githubusercontent.com/falmonacid15/weather-app-react/Features/Add-Material-ui-Tailwindcss-%26-mockup/demo/demo-search.gif)
 
 Dark and Light mode switch
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
-Responsive
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
+![App Screenshot](https://raw.githubusercontent.com/falmonacid15/weather-app-react/Features/Add-Material-ui-Tailwindcss-%26-mockup/demo/demo-dark%26lightmode.gif)
 
 ## Tech Stack
 
-**Client:** React, Vite,  Axios, TailwindCSS
-
+**Client:** React, Vite, Axios, TailwindCSS
 
 ## API Reference
 
@@ -71,12 +65,12 @@ Responsive
 api.openweathermap.org/data/2.5/weather?q={city_name}&lang={lang}&units={units}&appid={api_key}
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-| `city_name` | `string` | **Required**. City name |
-| `units` | `string` |  units: `standard`, `metric`, `imperial` |
-| `lang` | `string` |  languages: `es, en, fr ...` |
+| Parameter   | Type     | Description                             |
+| :---------- | :------- | :-------------------------------------- |
+| `api_key`   | `string` | **Required**. Your API key              |
+| `city_name` | `string` | **Required**. City name                 |
+| `units`     | `string` | units: `standard`, `metric`, `imperial` |
+| `lang`      | `string` | languages: `es, en, fr ...`             |
 
 #### Forecast
 
@@ -84,11 +78,9 @@ api.openweathermap.org/data/2.5/weather?q={city_name}&lang={lang}&units={units}&
 api.openweathermap.org/data/2.5/forecast?q={city_name}&lang={lang}&units={units}&appid={api_key}
 ```
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-| `city_name` | `string` | **Required**. City name |
-| `units` | `string` |  units: `standard`, `metric`, `imperial` |
-| `lang` | `string` |  languages: `es, en, fr ...` |
-
-
+| Parameter   | Type     | Description                             |
+| :---------- | :------- | :-------------------------------------- |
+| `api_key`   | `string` | **Required**. Your API key              |
+| `city_name` | `string` | **Required**. City name                 |
+| `units`     | `string` | units: `standard`, `metric`, `imperial` |
+| `lang`      | `string` | languages: `es, en, fr ...`             |

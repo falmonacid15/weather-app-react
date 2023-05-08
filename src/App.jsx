@@ -1,5 +1,11 @@
+// react imports
+import { useEffect, useState } from "react";
+
+// css & theme imports
 import "./assets/css/App.css";
 import { ThemeProvider } from "@emotion/react";
+
+// material ui imports
 import {
   Alert,
   Backdrop,
@@ -7,20 +13,21 @@ import {
   Card,
   CircularProgress,
   Grid,
-  LinearProgress,
   Snackbar,
   Stack,
   createTheme,
 } from "@mui/material";
+
+// components imports
 import SearchAppBar from "./components/layout/SearchAppBar";
 import CurrentWeatherPaper from "./components/data-display/currentWeather";
 import HourlyWeatherPaper from "./components/data-display/hourlyWeather";
-import SunsetAndSunrisePaper from "./components/data-display/sunsetAndSunrise";
 import WeaklyWeatherPaper from "./components/data-display/weaklyWeather";
-import { useEffect, useState } from "react";
-import GetCurrentWeather from "./components/services/getCurrentWeather";
-import GetHourlyWeather from "./components/services/getHourlyWeather";
-import GetForecastWeather from "./components/services/getForecastWeather";
+
+// services imports
+import GetCurrentWeather from "./services/getCurrentWeather";
+import GetHourlyWeather from "./services/getHourlyWeather";
+import GetForecastWeather from "./services/getForecastWeather";
 
 function App() {
   // theme
@@ -111,8 +118,8 @@ function App() {
     list: [],
     city: {},
   });
-  // const [data, setData] = useState();
 
+  // functions
   function handleSearch(city) {
     setSearch(city);
   }
@@ -331,18 +338,22 @@ function App() {
               : "Ciudad encontrada 😀"}
           </Alert>
         </Snackbar>
-        <Box container component={Card} className="w-full p-2">
-          <Grid item>
-            <Stack direction="row" spacing={4}>
-              <CurrentWeatherPaper data={currentWeather} />
-              <Stack direction="column" spacing={2}>
+        <Box component={Card} className="w-full">
+          <Backdrop open={currentWeather.cod !== 200} className="w-full">
+            <CircularProgress color="inherit" />
+          </Backdrop>
+          <Grid container className="mt-6 mb-12 mr-6 ml-6" xs={12}>
+            <Stack direction="row" spacing={3}>
+              <Grid item sx={4}>
+                <WeaklyWeatherPaper data={forecastWeather} />
+              </Grid>
+              <Grid item sx={4}>
+                <CurrentWeatherPaper data={currentWeather} />
+              </Grid>
+              <Grid item sx={4}>
                 <HourlyWeatherPaper data={hourlyWeather} />
-                <SunsetAndSunrisePaper data={currentWeather} />
-              </Stack>
+              </Grid>
             </Stack>
-          </Grid>
-          <Grid item>
-            <WeaklyWeatherPaper data={forecastWeather} />
           </Grid>
         </Box>
       </ThemeProvider>

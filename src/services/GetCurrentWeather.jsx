@@ -3,12 +3,11 @@ const api = {
   base: import.meta.env.VITE_API_URL,
 };
 
-const GetHourlyWeather = (props) => {
+const GetCurrentWeather = (props) => {
   const data = fetch(
-    `${api.base}forecast?q=${props}&units=metric&lang=es&APPID=${api.key}&cnt=5`
+    `${api.base}weather?q=${props}&units=metric&lang=es&APPID=${api.key}`
   ).then((res) => res.json());
-
   return data;
 };
 
-export default GetHourlyWeather;
+export default GetCurrentWeather;
