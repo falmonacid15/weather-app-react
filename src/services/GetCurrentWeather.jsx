@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 const api = {
   key: import.meta.env.VITE_API_KEY,
   base: import.meta.env.VITE_API_URL,

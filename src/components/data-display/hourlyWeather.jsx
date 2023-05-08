@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import moment from "moment/moment";
 import React from "react";
-import HourlySkeleton from "../layout/skeletons/hourlySkeleton";
+import HourlySkeleton from "../layout/skeletons/HourlySkeleton";
 import { useState } from "react";
 
 const HourlyWeatherPaper = (props) => {

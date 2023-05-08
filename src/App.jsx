@@ -1,5 +1,11 @@
+// react imports
+import { useEffect, useState } from "react";
+
+// css & theme imports
 import "./assets/css/App.css";
 import { ThemeProvider } from "@emotion/react";
+
+// material ui imports
 import {
   Alert,
   Backdrop,
@@ -7,19 +13,21 @@ import {
   Card,
   CircularProgress,
   Grid,
-  LinearProgress,
   Snackbar,
   Stack,
   createTheme,
 } from "@mui/material";
+
+// components imports
 import SearchAppBar from "./components/layout/SearchAppBar";
 import CurrentWeatherPaper from "./components/data-display/currentWeather";
 import HourlyWeatherPaper from "./components/data-display/hourlyWeather";
 import WeaklyWeatherPaper from "./components/data-display/weaklyWeather";
-import { useEffect, useState } from "react";
-import GetCurrentWeather from "./components/services/getCurrentWeather";
-import GetHourlyWeather from "./components/services/getHourlyWeather";
-import GetForecastWeather from "./components/services/getForecastWeather";
+
+// services imports
+import GetCurrentWeather from "./services/getCurrentWeather";
+import GetHourlyWeather from "./services/getHourlyWeather";
+import GetForecastWeather from "./services/getForecastWeather";
 
 function App() {
   // theme
@@ -111,6 +119,7 @@ function App() {
     city: {},
   });
 
+  // functions
   function handleSearch(city) {
     setSearch(city);
   }
