@@ -7,7 +7,6 @@ const GetForecastWeather = (props) => {
   const data = fetch(
     `${api.base}forecast?q=${props}&units=metric&lang=es&APPID=${api.key}&cnt=96`
   ).then((res) => res.json());
-  console.log("forecast", data);
   return data;
 };
 

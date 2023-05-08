@@ -42,8 +42,6 @@ const HourlyWeatherPaper = (props) => {
 
   const [selectedHour, setSelectedHour] = useState({});
 
-  console.log("selectedhour", selectedHour);
-
   return (
     <Box component={Paper} container className="shadow-xl">
       <Grid item>

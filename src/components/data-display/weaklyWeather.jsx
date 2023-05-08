@@ -81,8 +81,6 @@ const WeaklyWeatherPaper = (props) => {
     };
   });
 
-  console.log("forecastsByDay", result);
-
   return (
     <Box container component={Paper} className="shadow-xl">
       <Typography className="uppercase font-extrabold text-xl text-center antialiased">

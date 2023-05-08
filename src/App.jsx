@@ -26,8 +26,8 @@ import WeaklyWeatherPaper from "./components/data-display/weaklyWeather";
 
 // services imports
 import GetCurrentWeather from "./services/getCurrentWeather";
-import GetHourlyWeather from "./services/getHourlyWeather";
-import GetForecastWeather from "./services/getForecastWeather";
+import GetForecastWeather from "./services/GetForecastWeather";
+import GetHourlyWeather from "./services/GetHourlyWeather";
 
 function App() {
   // theme
