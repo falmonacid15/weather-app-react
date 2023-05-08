@@ -11,7 +11,7 @@ Simple web application to check weather conditions for any city in the world usi
 clone repository
 
 ```bash
- git clone
+ git clone https://github.com/falmonacid15/weather-app-react.git
 ```
 
 ## Environment Variables
